@@ -1,0 +1,14 @@
+{
+  "name": "280e211e13794552",
+  "main": "280e211e13794552@493.js",
+  "version": "493.0.0",
+  "homepage": "https://observablehq.com/d/280e211e13794552",
+  "author": {
+    "name": "GeorgeYHsu",
+    "url": "https://observablehq.com/@designasabaker"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
