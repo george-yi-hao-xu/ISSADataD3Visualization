@@ -59,7 +59,7 @@ function _sunburst(partition, data, d3, radius, width, color, arc, mousearc) {
   const label = svg
     .append("text")
     .attr("text-anchor", "middle")
-    .attr("fill", "#888")
+    .attr("fill", "black")
     .style("visibility", "hidden");
 
   label
@@ -68,7 +68,7 @@ function _sunburst(partition, data, d3, radius, width, color, arc, mousearc) {
     .attr("x", 0)
     .attr("y", 0)
     .attr("dy", "-0.1em")
-    .attr("font-size", "3em")
+    .attr("font-size", "2em")
     .text("");
 
   label
@@ -76,7 +76,7 @@ function _sunburst(partition, data, d3, radius, width, color, arc, mousearc) {
     .attr("x", 0)
     .attr("y", 0)
     .attr("dy", "1.5em")
-    .text("of visits begin with this sequence");
+    .text("cases dealed with");
 
   svg
     .attr("viewBox", `${-radius} ${-radius} ${width} ${width}`)
@@ -180,7 +180,7 @@ function _partition(d3, radius) {
         d3
           .hierarchy(data)
           .sum(d => d.value)
-          .sort((a, b) => b.value - a.value)
+        //.sort((a, b) => b.value - a.value) //sort by case numbers
       )
   )
 }
@@ -189,9 +189,9 @@ function _color(d3) {
   return (
     d3
       .scaleOrdinal()
-      .domain(["home", "product", "search", "account", "other", "end"])
-      .range(["#5d85cf", "#7c6561", "#da7847", "#6fb971", "#9e70cf", "#bbbbbb"])
-  )
+      .domain(["Total Enrolled International Students", "Total Graduated Student Served", "Total Advising Meetings Held", "Applications Processed", "Letters Issued", "Reporting", "F1 Visa", "OPT (approved only)"])
+      .range(["#09788B", "#37b1af", "#ffc501", "#6fb971", "#cd5eb9ff", "#bbbbbb", "#53cdcb", "#b7e4e4"])
+  ) // pie chart color scheme
 }
 
 function _width() {
@@ -216,6 +216,16 @@ function _arc(d3, radius) {
       .padRadius(radius)
       .innerRadius(d => Math.sqrt(d.y0))
       .outerRadius(d => Math.sqrt(d.y1) - 1)
+  )
+}
+
+function _arcMonthText(d3, radius) {
+  return (
+    d3
+      .arc()
+      .innerRadius(radius)
+      .outerRadius(radius)
+      .text(d => d.data.name)
   )
 }
 
@@ -315,7 +325,7 @@ function _d3(require) {
 
 function _18(md) {
   return (
-    md`This notebook reuses much of the \`buildHierarchy\` function from my original [Sequences sunburst](https://gist.github.com/kerryrodden/7090426) gist, which was published when I worked at Google, with the following [license](https://gist.github.com/kerryrodden/7090426#file-license):
+    /*md`This notebook reuses much of the \`buildHierarchy\` function from my original [Sequences sunburst](https://gist.github.com/kerryrodden/7090426) gist, which was published when I worked at Google, with the following [license](https://gist.github.com/kerryrodden/7090426#file-license):
 
 > Copyright 2013 Google Inc. All Rights Reserved.
 > 
@@ -329,7 +339,8 @@ function _18(md) {
 > distributed under the License is distributed on an "AS IS" BASIS,
 > WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 > See the License for the specific language governing permissions and
-> limitations under the License.`
+> limitations under the License.`*/
+    md``
   )
 }
 
@@ -340,11 +351,11 @@ export default function define(runtime, observer) {
     ["visit-sequences@1.csv", { url: new URL("./files/myData.csv", import.meta.url), mimeType: "text/csv", toString }]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
-  main.variable(observer()).define(["md"], _1);
+  //main.variable(observer()).define(["md"], _1);
   main.variable(observer("breadcrumb")).define("breadcrumb", ["d3", "breadcrumbWidth", "breadcrumbHeight", "sunburst", "breadcrumbPoints", "color"], _breadcrumb);
   main.variable(observer("viewof sunburst")).define("viewof sunburst", ["partition", "data", "d3", "radius", "width", "color", "arc", "mousearc"], _sunburst);
   main.variable(observer("sunburst")).define("sunburst", ["Generators", "viewof sunburst"], (G, _) => G.input(_));
-  main.variable(observer()).define(["md"], _4);
+  //main.variable(observer()).define(["md"], _4);
   main.variable(observer("csv")).define("csv", ["d3", "FileAttachment"], _csv);
   main.variable(observer("data")).define("data", ["buildHierarchy", "csv"], _data);
   main.variable(observer("partition")).define("partition", ["d3", "radius"], _partition);
